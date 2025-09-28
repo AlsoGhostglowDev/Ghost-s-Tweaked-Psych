@@ -32,7 +32,7 @@
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
 	
 	<define name="PRETTY_TRACE" />
-	<define name="CUSTOM_CLASSES" /> <!-- Allows for custom classes using HScript. Increases loading times though-->
+	<define name="CUSTOM_CLASSES" /> <!-- Allows for custom classes using HScript. Increases loading times-->
 
 	<section if="officialBuild">
 		<define name="TITLE_SCREEN_EASTER_EGG"/>
@@ -95,6 +95,7 @@
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 
 	<!-- _______________________________ Libraries ______________________________ -->
+	
 	<haxelib name="flixel" version="5.6.2"/>
 	<haxelib name="flixel-ui" version="2.5.0"/>
 	<haxelib name="flixel-addons" version="3.2.2"/>
@@ -107,7 +108,7 @@
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate"/>
 	
-	<haxelib name="hscript-improved" if="HSCRIPT_ALLOWED"/>
+	<haxelib name="hscript-improved-dev" if="HSCRIPT_ALLOWED"/>
 	<define name="hscriptPos" />
 
 	<!-- Disable Discord IO Thread -->

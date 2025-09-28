@@ -512,21 +512,31 @@ class LuaUtils
 		}
 		return PlayState.instance.camGame;
 	}
-	
-	#if HSCRIPT_ALLOWED
-	public static var hscriptPreprocessors(get, never):Map<String, Dynamic>;
-	public static function get_hscriptPreprocessors() {
-		var preprocessors:Map<String, Dynamic> = backend.Macro.compilerDefines;
-		preprocessors.set("GHOST_ENGINE", true);
-		preprocessors.set("GHOST_ENGINE_VER", Global.forkVersion);
-		preprocessors.set("GHOST_ENGINE_STAGE", Global.forkStage);
-		preprocessors.set("BUILD_TARGET", LuaUtils.getBuildTarget());
 
-		return preprocessors;
+	// https://github.com/ShadowMario/FNF-PsychEngine/commit/cf674627b40fa8f06a0a7b74ddc6b403ebfcf138
+	public static function isLuaSupported(value:Any):Bool {
+		return (value == null || isOfTypes(value, [Bool, Int, Float, String, Array]) || Type.typeof(value) == ValueType.TObject);
 	}
-	
+
+	#if HSCRIPT_ALLOWED
+	public static var preprocessors(get, never):Map<String, Dynamic>;
+	public static function get_preprocessors() {
+		var _preprocessors:Map<String, Dynamic> = backend.Macro.compilerDefines;
+
+		_preprocessors.set("GHOST_ENGINE", true);
+		_preprocessors.set("GHOST_ENGINE_VER", Global.forkVersion);
+		_preprocessors.set("GHOST_ENGINE_STAGE", Global.forkStage);
+		_preprocessors.set("BUILD_TARGET", LuaUtils.getBuildTarget());
+
+		return _preprocessors;
+	}
+
 	public static function getHScriptParent():Dynamic {
 		return (FlxG.state.subState == null ? FlxG.state : FlxG.state.subState);
+	}
+
+	public static function isPlayStateScript(obj:Dynamic):Bool {
+		return (obj is PlayState && !(obj is flixel.FlxSubState));
 	}
 
 	@:noUsing public static inline function getMacroAbstractClass(className:String) return Type.resolveClass('${className}_HSC');

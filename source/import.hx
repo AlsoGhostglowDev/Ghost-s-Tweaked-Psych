@@ -74,5 +74,4 @@ import backend.Log.info;
 #else
 import haxe.Log;
 #end
-
 #end

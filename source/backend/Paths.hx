@@ -466,6 +466,22 @@ class Paths
 		localTrackedAssets.push(gottenPath);
 		return currentTrackedSounds.get(gottenPath);
 	}
+	
+	#if HSCRIPT_ALLOWED
+	static public function getScriptPath(scriptName:String, ?modFolder:Null<String> = null):String {
+		#if MODS_ALLOWED
+		//If the mod folder is null, then it just uses the current mod directory.
+		if((modFolder == null || modFolder.length == 0) && (Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0))
+			modFolder = Mods.currentModDirectory;
+
+		var scriptPath = Paths.mods(((modFolder != null && modFolder.length > 0) ? modFolder + "/" : "") + scriptName);
+		#else
+		var scriptPath = "assets/" + scriptName;
+		#end
+
+		return scriptPath;
+	}
+	#end
 
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '') {
