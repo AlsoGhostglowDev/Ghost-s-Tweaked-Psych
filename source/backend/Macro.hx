@@ -20,7 +20,7 @@ class Macro {
 	
 	//Adds any extra classes into the executable, no dce
 	public static final addonClasses:Array<String> = [
-		//"backend" //Log.hx has no field "info"
+		"backend", //Log.hx has no field "info"
 
 		//Lime library
 		"lime.app", "lime.graphics",

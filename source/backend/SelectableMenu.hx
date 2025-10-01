@@ -8,6 +8,7 @@ class SelectableMenu extends MusicBeatState {
     var _bg:FlxSprite;
     public var curSelected:Array<Int> = [0, 0];
     public var scrollMult:Array<Float> = [0, 0];
+    public var allowMouseWheel:Bool = true;
     public var allowWrapping:Bool = true;
     public var canLeave:Bool = true;
     public var lead:Int = 0;
@@ -16,7 +17,7 @@ class SelectableMenu extends MusicBeatState {
     public var options:Map<String, Void->Void> = new Map();
 
     public var onEnterPressed:FlxTypedSignal<Void->Void>;
-    public var onItemChanged:FlxTypedSignal<Void->Void>;
+    public var onItemChanged:FlxTypedSignal<Int->Void>;
     public var onExit:FlxTypedSignal<Void->Void>;
     public var onExitAttempt:FlxTypedSignal<Void->Void>;
 
@@ -31,7 +32,7 @@ class SelectableMenu extends MusicBeatState {
         add(_bg);
 
         onEnterPressed = new FlxTypedSignal<Void->Void>();
-        onItemChanged = new FlxTypedSignal<Void->Void>();
+        onItemChanged = new FlxTypedSignal<Int->Void>();
         onExit = new FlxTypedSignal<Void->Void>();
         onExitAttempt = new FlxTypedSignal<Void->Void>();
     }
@@ -52,6 +53,8 @@ class SelectableMenu extends MusicBeatState {
             changeItem(delta, i);
         }
 
+        if (allowMouseWheel && FlxG.mouse.wheel != 0) changeItem(int(-FlxG.mouse.wheel * scrollMult[lead]));
+
         if (controls.BACK) { 
             if (canLeave) onExit.dispatch();
             else onExitAttempt.dispatch();
@@ -68,6 +71,6 @@ class SelectableMenu extends MusicBeatState {
         else
             curSelected[index] = FlxMath.wrap(curSelected[index], 0, optionOrder.length-1);
 
-        onItemChanged.dispatch();
+        onItemChanged.dispatch(delta);
     }
 }

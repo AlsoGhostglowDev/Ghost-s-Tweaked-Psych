@@ -53,7 +53,6 @@ class MusicBeatState extends FlxUIState
 		grpDebugTxt.cameras = [debugCam];
 		add(grpDebugTxt);
 
-		trace('grpDebugTxt is initialized');
 		#end
 
 		super.create();
@@ -239,7 +238,7 @@ class MusicBeatState extends FlxUIState
 	}
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-	public function addTextToDebug(text:String, color:FlxColor) {
+	public function addTextToDebug(text:String, color:FlxColor, ?isError:Bool = false) {
 		if (grpDebugTxt != null) {
 			var newText:psychlua.DebugLuaText = grpDebugTxt.recycle(psychlua.DebugLuaText);
 			newText.text = text;
@@ -253,10 +252,13 @@ class MusicBeatState extends FlxUIState
 			});
 			grpDebugTxt.add(newText);
 		}
-		error(text);
+
+		if (color == FlxColor.RED) isError = true;
+		(isError ? error : info)(text);
 	}
 	#else
-	public function addTextToDebug(text:String, color:FlxColor) error(text);
+	public function addTextToDebug(text:String, color:FlxColor, ?isError:Bool = false) 
+		(isError ? error : info)(text);
 	#end
 	
 	#if HSCRIPT_ALLOWED

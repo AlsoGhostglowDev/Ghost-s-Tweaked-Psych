@@ -23,7 +23,7 @@ class Rating
 		{
 			this.hitWindow = Reflect.field(ClientPrefs.data, window);
 		}
-		catch(e) FlxG.log.error(e);
+		catch(e) error(e);
 	}
 
 	public static function loadDefault():Array<Rating>

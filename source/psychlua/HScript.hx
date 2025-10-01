@@ -14,12 +14,6 @@ import psychlua.LuaUtils;
 import llua.Lua;
 #end
 
-#if PRETTY_TRACE
-import backend.Log;
-#else
-import haxe.Log;
-#end
-
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -164,11 +158,8 @@ class HScript implements HscriptInterface {
 			});
 
 			interp.variables.set("debugPrint", function(text:Dynamic = "", ?color:FlxColor = null) {
-				#if(LUA_ALLOWED || HSCRIPT_ALLOWED)
-				if(FlxG.state is PlayState)
-					PlayState.instance.addTextToDebug(text, (color ?? FlxColor.WHITE));
-				else #end	
-					HScript.onHaxeTrace(text, this.interp);
+				PlayState.instance.addTextToDebug(text, (color ?? FlxColor.WHITE));
+				HScript.onHaxeTrace(text, this.interp);
 			});
 
 			interp.execute(expr);
@@ -366,6 +357,10 @@ class HScript implements HscriptInterface {
 			lua.addLocalCallback(name, func);
 			return true;
 		});
+
+		obj.variables.set("debugPrint", function(text:Dynamic = "", ?color:FlxColor = null) {
+			MusicBeatState.getState().addTextToDebug(text, (color ?? FlxColor.WHITE));
+		});
 		#end
 	}
 
@@ -389,10 +384,10 @@ class HScript implements HscriptInterface {
 		#if PRETTY_TRACE
 		switch(level.toLowerCase()) {
 			case "error":
-				Log.error(v, {fileName: posInfos.fileName, lineNumber: posInfos.lineNumber, className: null, methodName: null});
+				error(v, {fileName: posInfos.fileName, lineNumber: posInfos.lineNumber, className: null, methodName: null});
 				return;
 			case "warn":
-				Log.warn(v, {fileName: posInfos.fileName, lineNumber: posInfos.lineNumber, className: null, methodName: null});
+				warn(v, {fileName: posInfos.fileName, lineNumber: posInfos.lineNumber, className: null, methodName: null});
 				return;
 		}
 		#end
@@ -402,7 +397,7 @@ class HScript implements HscriptInterface {
 
     function onError(e:Error) {
 		#if PRETTY_TRACE
-		Log.error(Printer.errorToString(e));
+		error(Printer.errorToString(e));
 		#else
 		trace(e);
 		#end
@@ -412,7 +407,7 @@ class HScript implements HscriptInterface {
 		var posInfos = interp.posInfos();
 
 		#if PRETTY_TRACE
-		Log.warn(Printer.errorToString(e), {fileName: posInfos.fileName, lineNumber: posInfos.lineNumber, className: null, methodName: null});
+		warn(Printer.errorToString(e), {fileName: posInfos.fileName, lineNumber: posInfos.lineNumber, className: null, methodName: null});
 		#else
 		trace(Printer.errorToString(e), {fileName: posInfos.fileName, lineNumber: posInfos.lineNumber, className: null, methodName: null});
 		#end

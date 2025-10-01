@@ -20,11 +20,12 @@ class MainMenuState extends SelectableMenu {
     var buttonRedirect:Map<String, Void->Void> = [];
 
 	public function new() {
-        super(new KeyValueArray<Void->Void>(['story_mode', 'freeplay', 'credits', 'donate'], [
+        super(new KeyValueArray<Void->Void>(['story_mode', 'freeplay', 'credits', 'donate', 'mods'], [
             () -> transition(menuItems.members[0], () -> MusicBeatState.switchState(new StoryMenuState())),
             () -> transition(menuItems.members[1], () -> MusicBeatState.switchState(new FreeplayState())),
             () -> transition(menuItems.members[2], () -> MusicBeatState.switchState(new CreditsState())),
             () -> trace('Donate Button'),
+            () -> transition(menuItems.members[4], () -> MusicBeatState.switchState(new ModsMenuState()))
         ]), Paths.image('menuBG'));
         buttonRedirect = [
             "options"      => () -> transition(buttonItems.members[0], () -> MusicBeatState.switchState(new OptionsState())),
@@ -32,8 +33,7 @@ class MainMenuState extends SelectableMenu {
         ];
 
         scrollMult = [1, 0];
-        onEnterPressed.add( () -> trace('Enter has been pressed') );
-        onItemChanged.add( () -> {
+        onItemChanged.add( (delta:Int) -> {
             FlxG.sound.play(Paths.sound('scrollMenu'));
             curSelectedItem = menuItems.members[curSelected[0]];
 
@@ -46,6 +46,9 @@ class MainMenuState extends SelectableMenu {
                 }
                 item.centerOffsets();
             }
+
+            if (delta != 0)
+                arrowButtons.members[delta < 0 ? 0 : 1].x += delta * 30;
         });
         onExit.add( () -> MusicBeatState.switchState(new TitleState()));
 
@@ -88,7 +91,7 @@ class MainMenuState extends SelectableMenu {
             menuItem.x += (FlxG.width / 2) * i;
         }
         curSelectedItem = menuItems.members[0];
-        onItemChanged.dispatch();
+        onItemChanged.dispatch(0);
 
         for (i in 0...2) {
             var arrow = new FlxSprite(i == 0 ? 40 : FlxG.width - (209 * 0.4) - 40);
@@ -142,6 +145,8 @@ class MainMenuState extends SelectableMenu {
                 arrow.setColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
                 if (FlxG.mouse.justPressed) changeItem(i == 0 ? -1 : 1);
             }
+
+            arrow.x = FlxMath.lerp(arrow.x, i == 0 ? 40 : FlxG.width - (209 * 0.4) - 40, 0.2);
         }
 
         @:privateAccess

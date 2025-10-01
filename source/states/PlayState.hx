@@ -810,7 +810,7 @@ class PlayState extends MusicBeatState
 		if(!OpenFlAssets.exists(filepath))
 		#end
 		{
-			FlxG.log.warn('Couldnt find video file: ' + name);
+			warn('Couldnt find video file: ' + name);
 			startAndEnd();
 			return;
 		}
@@ -835,7 +835,7 @@ class PlayState extends MusicBeatState
 			}
 			#end
 		#else
-		FlxG.log.warn('Platform not supported!');
+		warn('Platform not supported!');
 		startAndEnd();
 		return;
 		#end
@@ -877,7 +877,7 @@ class PlayState extends MusicBeatState
 			psychDialogue.cameras = [camHUD];
 			add(psychDialogue);
 		} else {
-			FlxG.log.warn('Your dialogue file is badly formatted!');
+			warn('Your dialogue file is badly formatted!');
 			startAndEnd();
 		}
 	}
@@ -2162,9 +2162,9 @@ class PlayState extends MusicBeatState
 					var len:Int = e.message.indexOf('\n') + 1;
 					if(len <= 0) len = e.message.length;
 					#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-					addTextToDebug('ERROR ("Set Property" Event) - ' + e.message.substr(0, len), FlxColor.RED);
+					addTextToDebug('ERROR ("Set Property" Event) - ' + e.message.substr(0, len), FlxColor.RED, true);
 					#else
-					FlxG.log.warn('ERROR ("Set Property" Event) - ' + e.message.substr(0, len));
+					warn('ERROR ("Set Property" Event) - ' + e.message.substr(0, len));
 					#end
 				}
 
@@ -3392,14 +3392,14 @@ class PlayState extends MusicBeatState
 		#if (!flash && MODS_ALLOWED && sys)
 		if(!runtimeShaders.exists(name) && !initLuaShader(name))
 		{
-			FlxG.log.warn('Shader $name is missing!');
+			warn('Shader $name is missing!');
 			return new FlxRuntimeShader();
 		}
 
 		var arr:Array<String> = runtimeShaders.get(name);
 		return new FlxRuntimeShader(arr[0], arr[1]);
 		#else
-		FlxG.log.warn("Platform unsupported for Runtime Shaders!");
+		warn("Platform unsupported for Runtime Shaders!");
 		return null;
 		#end
 	}
@@ -3411,7 +3411,7 @@ class PlayState extends MusicBeatState
 		#if (MODS_ALLOWED && !flash && sys)
 		if(runtimeShaders.exists(name))
 		{
-			FlxG.log.warn('Shader $name was already initialized!');
+			warn('Shader $name was already initialized!');
 			return true;
 		}
 
@@ -3441,13 +3441,10 @@ class PlayState extends MusicBeatState
 				return true;
 			}
 		}
-			#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-			addTextToDebug('Missing shader $name .frag AND .vert files!', FlxColor.RED);
-			#else
-			FlxG.log.warn('Missing shader $name .frag AND .vert files!');
-			#end
+
+		addTextToDebug('Missing shader $name .frag AND .vert files!', FlxColor.RED, true);
 		#else
-		FlxG.log.warn('This platform doesn\'t support Runtime Shaders!');
+		warn('This platform doesn\'t support Runtime Shaders!');
 		#end
 		return false;
 	}
