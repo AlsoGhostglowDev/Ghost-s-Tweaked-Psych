@@ -1,10 +1,6 @@
 package objects;
 
 import psychlua.LuaUtils;
-#if PRETTY_TRACE
-import backend.Log.error;
-import backend.Log.warn;
-#end
 
 class CinematicBars extends FlxSpriteGroup {
     public var topBar:FlxSprite;

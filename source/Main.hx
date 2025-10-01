@@ -4,7 +4,7 @@ package;
 import android.content.Context;
 #end
 
-import debug.FPSCounter;
+import debug.Framerate;
 import backend.Global;
 
 import flixel.graphics.FlxGraphic;
@@ -47,7 +47,7 @@ class Main extends Sprite
 		startFullscreen: false // if the game should start at fullscreen mode
 	};
 
-	public static var fpsVar:FPSCounter;
+	public static var fpsVar:Framerate;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -64,6 +64,10 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+		#if PRETTY_TRACE 
+		backend.Log.init();
+		#end
 
 		// Credits to MAJigsaw77 (he's the og author for this code)
 		#if android
@@ -113,7 +117,7 @@ class Main extends Sprite
 		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if !mobile
-		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
+		fpsVar = new Framerate();
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -136,9 +140,6 @@ class Main extends Sprite
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 
-		#if PRETTY_TRACE 
-		backend.Log.init();
-		#end
 		Global.init();
 
 		#if DISCORD_ALLOWED

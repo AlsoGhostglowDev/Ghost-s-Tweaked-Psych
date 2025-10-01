@@ -131,7 +131,7 @@ class Achievements {
 	public static function unlock(name:String, autoStartPopup:Bool = true):String {
 		if(!achievements.exists(name))
 		{
-			FlxG.log.error('Achievement "$name" does not exists!');
+			error('Achievement "$name" does not exists!');
 			throw new Exception('Achievement "$name" does not exists!');
 			return null;
 		}

@@ -25,6 +25,7 @@ class Mods
 		'stages',
 		'weeks',
 		'fonts',
+		#if HSCRIPT_ALLOWED 'libraries', #end
 		'scripts',
 		'achievements'
 	];

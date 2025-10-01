@@ -3202,7 +3202,7 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		FlxG.log.notice("Successfully saved LEVEL DATA.");
+		info("Successfully saved LEVEL DATA.");
 	}
 
 	/**
@@ -3225,7 +3225,7 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		FlxG.log.error("Problem saving Level data");
+		error("Problem saving Level data");
 	}
 
 	function getSectionBeats(?section:Null<Int> = null)

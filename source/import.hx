@@ -37,14 +37,6 @@ import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
 
-#if PRETTY_TRACE
-import backend.Log;
-// Log is not ready to be accessed or whatever apparently?
-//import backend.Log.info;
-#else
-import haxe.Log;
-#end
-
 import backend.Global;
 
 import objects.Alphabet;
@@ -73,4 +65,13 @@ import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
 using StringTools;
+
+#if PRETTY_TRACE
+import backend.Log;
+import backend.Log.error;
+import backend.Log.warn;
+import backend.Log.info;
+#else
+import haxe.Log;
+#end
 #end

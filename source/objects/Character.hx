@@ -161,7 +161,7 @@ class Character extends FlxSprite
 			}
 			catch(e:Dynamic)
 			{
-				FlxG.log.warn('Could not load atlas ${json.image}: $e');
+				warn('Could not load atlas ${json.image}: $e');
 			}
 		}
 		#end

@@ -535,7 +535,7 @@ class WeekEditorState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		FlxG.log.notice("Successfully saved file.");
+		info("Successfully saved file.");
 	}
 
 	/**
@@ -558,7 +558,7 @@ class WeekEditorState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		FlxG.log.error("Problem saving file");
+		error("Problem saving file");
 	}
 }
 

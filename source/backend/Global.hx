@@ -21,9 +21,14 @@ class Global {
         http.onData = function(data:String)
         {
             forkLatestVersion = data.split('\n')[0].trim();
-            trace('Latest Version: ' + forkLatestVersion + ', Current Version: ' + forkVersion);
+            info('
+            Version Info:
+                FNF: $fnfVersion,
+                Psych: $engineVersion,
+                GTPsych: ${forkVersion + forkStage.substr(0,1)}
+            ');
             if(forkLatestVersion != forkVersion) {
-                trace('Current version is outdated.');
+                warn('Current version is outdated.');
                 states.TitleState.mustUpdate = true;
             }
         }

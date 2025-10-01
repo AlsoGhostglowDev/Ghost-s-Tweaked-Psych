@@ -165,7 +165,7 @@ class ClientPrefs {
 		save.data.keyboard = keyBinds;
 		save.data.gamepad = gamepadBinds;
 		save.flush();
-		FlxG.log.add("Settings saved!");
+		info("Settings saved!");
 	}
 
 	public static function loadPrefs() {
