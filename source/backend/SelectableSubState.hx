@@ -8,6 +8,7 @@ class SelectableSubState extends MusicBeatSubstate {
     var _bg:FlxSprite;
     public var curSelected:Array<Int> = [0, 0];
     public var scrollMult:Array<Float> = [0, 0];
+    public var allowMouseWheel:Bool = true;
     public var allowWrapping:Bool = true;
     public var allowEnter:Bool = true;
     public var canLeave:Bool = true;
@@ -49,6 +50,8 @@ class SelectableSubState extends MusicBeatSubstate {
 
             changeItem(delta, i);
         }
+
+        if (allowMouseWheel && FlxG.mouse.wheel != 0 && lead != 1) changeItem(int(-FlxG.mouse.wheel * scrollMult[lead]));
 
         if (controls.BACK) { 
             if (canLeave) onExit.dispatch();

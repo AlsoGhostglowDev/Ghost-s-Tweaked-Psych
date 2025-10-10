@@ -187,7 +187,7 @@ private class MenuButton extends FlxSprite {
         super(x, y);
         frames = Paths.getSparrowAtlas('mainmenu/button/menu_' + graphic);
         antialiasing = ClientPrefs.data.antialiasing;
-        animation.addByPrefix('idle', graphic + " idle", 24, false);
+        animation.addByPrefix('idle', graphic + " idle", 24, true);
 		animation.addByPrefix('selected', graphic + " selected", 24, false);
         animation.play('idle');
         scrollFactor.set();

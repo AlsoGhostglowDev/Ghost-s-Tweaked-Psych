@@ -170,12 +170,12 @@ class LuaUtils
 		else
 		{
 			FlxG.save.data.modSettings.remove(modName);
-			PlayState.instance.addTextToDebug('getModSetting: $path could not be found!', FlxColor.RED, true);
+			MusicBeatState.getState().addTextToDebug('getModSetting: $path could not be found!', FlxColor.RED, true);
 			return null;
 		}
 
 		if(settings.exists(saveTag)) return settings.get(saveTag);
-		PlayState.instance.addTextToDebug('getModSetting: "$saveTag" could not be found inside $modName\'s settings!', FlxColor.RED, true);
+		MusicBeatState.getState().addTextToDebug('getModSetting: "$saveTag" could not be found inside $modName\'s settings!', FlxColor.RED, true);
 		#end
 		return null;
 	}

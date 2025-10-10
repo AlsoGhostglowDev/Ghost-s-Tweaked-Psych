@@ -21,8 +21,8 @@ class MusicBeatState extends FlxUIState
 	private var curDecBeat:Float = 0;
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-	private var debugCam:FlxCamera;
-	private var grpDebugTxt:FlxTypedGroup<psychlua.DebugLuaText>;
+	public var debugCam:FlxCamera;
+	public var grpDebugTxt:FlxTypedGroup<psychlua.DebugLuaText>;
 	#end
 
 	public var controls(get, never):Controls;
@@ -31,7 +31,8 @@ class MusicBeatState extends FlxUIState
 		return Controls.instance;
 	}
 
-	var _psychCameraInitialized:Bool = false;
+	private var _psychCameraInitialized:Bool = false;
+	private var _debugGroupInitialized:Bool = false;
 	
 	#if HSCRIPT_ALLOWED
 	public var scripts:Array<HScript> = [];
@@ -43,17 +44,7 @@ class MusicBeatState extends FlxUIState
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
 		if(!_psychCameraInitialized) initPsychCamera();
-
-		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-		debugCam = new FlxCamera();
-		debugCam.bgColor.alpha = 0;
-		FlxG.cameras.add(debugCam, false);
-
-		grpDebugTxt = new FlxTypedGroup<psychlua.DebugLuaText>();
-		grpDebugTxt.cameras = [debugCam];
-		add(grpDebugTxt);
-
-		#end
+		if(!_debugGroupInitialized)  initDebugGroup();
 
 		super.create();
 
@@ -62,6 +53,33 @@ class MusicBeatState extends FlxUIState
 		}
 		FlxTransitionableState.skipNextTransOut = false;
 		timePassedOnState = 0;
+
+		if (Main.fpsVar != null) {
+			if (getState() == PlayState.instance)
+				Main.fpsVar.unfocus();
+			else
+				Main.fpsVar.focus();
+		}
+	}
+
+	public function initDebugGroup():FlxTypedGroup<psychlua.DebugLuaText> {
+		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+		debugCam = new FlxCamera();
+		debugCam.bgColor.alpha = 0;
+		FlxG.cameras.add(debugCam, false);
+
+		grpDebugTxt = new FlxTypedGroup<psychlua.DebugLuaText>();
+		grpDebugTxt.camera = debugCam;
+		add(grpDebugTxt);
+
+		_debugGroupInitialized = true;
+
+		trace('grpDebugTxt Null? :: ${grpDebugTxt == null}');
+		trace('debugCam Null? :: ${debugCam == null}');
+		addTextToDebug('[backend Test] whats up people of america', -1);
+		#end
+
+		return grpDebugTxt;
 	}
 
 	public function initPsychCamera():PsychCamera
@@ -239,6 +257,7 @@ class MusicBeatState extends FlxUIState
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	public function addTextToDebug(text:String, color:FlxColor, ?isError:Bool = false) {
+		trace('[addTextToDebug] grpDebugTxt Null? :: ${grpDebugTxt == null}');
 		if (grpDebugTxt != null) {
 			var newText:psychlua.DebugLuaText = grpDebugTxt.recycle(psychlua.DebugLuaText);
 			newText.text = text;

@@ -21,6 +21,9 @@ import sys.FileSystem;
 import openfl.utils.Assets;
 #end
 
+import haxe.ds.StringMap;
+import haxe.ds.IntMap;
+
 /*
  * The class that handles haxe scripts. Based off of T-Bar Engine's HScript class & modified for use here!
  */
@@ -41,6 +44,10 @@ class HScript implements HscriptInterface {
 	 */
     public static var classes:Map<String, Dynamic> = [
 		//Base level haxe classes. Not recommended to edit these!
+		"Int" => Int, "Float" => Float,
+		"String" => String, "Bool" => Bool, 
+		"StringMap" => StringMap, "IntMap" => IntMap,
+
 		"Math" => Math, "Std" => Std,
 		"StringTools" => StringTools,
 		"Reflect" => Reflect, 'Type' => Type,
@@ -158,7 +165,7 @@ class HScript implements HscriptInterface {
 			});
 
 			interp.variables.set("debugPrint", function(text:Dynamic = "", ?color:FlxColor = null) {
-				PlayState.instance.addTextToDebug(text, (color ?? FlxColor.WHITE));
+				MusicBeatState.getState().addTextToDebug(text, (color ?? FlxColor.WHITE));
 				HScript.onHaxeTrace(text, this.interp);
 			});
 

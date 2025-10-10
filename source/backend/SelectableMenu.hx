@@ -53,7 +53,7 @@ class SelectableMenu extends MusicBeatState {
             changeItem(delta, i);
         }
 
-        if (allowMouseWheel && FlxG.mouse.wheel != 0) changeItem(int(-FlxG.mouse.wheel * scrollMult[lead]));
+        if (allowMouseWheel && FlxG.mouse.wheel != 0 && lead != 1) changeItem(int(-FlxG.mouse.wheel * scrollMult[lead]));
 
         if (controls.BACK) { 
             if (canLeave) onExit.dispatch();

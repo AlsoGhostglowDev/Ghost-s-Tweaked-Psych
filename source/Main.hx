@@ -119,6 +119,12 @@ class Main extends Sprite
 		#if !mobile
 		fpsVar = new Framerate();
 		addChild(fpsVar);
+
+		FlxG.signals.postUpdate.add(() -> {
+			if (FlxG.keys.justPressed.F3)
+				fpsVar.toggleVisibility();
+		});
+
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null) {

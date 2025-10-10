@@ -140,15 +140,14 @@ class TitleState extends MusicBeatState
 			MusicBeatState.switchState(new WarningState('WARNING',
 				'Hey! Be warned, <!>flashing lights<!> are present in this mod\n' +
 				'If you are sensitive, it\'s recommended to turn it off.\n\n' + 
-				'Press <*>ACCEPT<*> to <?>turn <!>off<!> flashing lights<?>\n'+
-				'Press <!>BACK<!> to <?>ignore<?> and continue.',
+				'Press <*>ACCEPT<*> to continue anyways\n'+
+				'Press <!>BACK<!> to disable flashing lights.',
 				{
-					enter: () -> {
+					back: () -> ClientPrefs.data.flashing = false,
+					both: () -> {
 						MusicBeatState.switchState(new TitleState());
-						ClientPrefs.data.flashing = false;
-					},
-					back: () -> MusicBeatState.switchState(new TitleState()),
-					both: () -> leftState['flashing'] = true
+						leftState['flashing'] = true;
+					}
 				}
 			));
 		} else {

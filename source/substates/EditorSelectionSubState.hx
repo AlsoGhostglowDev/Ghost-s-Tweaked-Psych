@@ -17,7 +17,7 @@ class EditorSelectionSubState extends SelectableSubState {
         super(new KeyValueArray<Void->Void>(['Chart', 'Character', 'Modchart', 'Stage', 'Week', 'Menu Character', 'Dialogue', 'Dialogue Character', 'Note Splashes'], [
             () -> LoadingState.loadAndSwitchState(new ChartingState(), false),
 			() -> LoadingState.loadAndSwitchState(new CharacterEditorState(objects.Character.DEFAULT_CHARACTER, false)),
-            () -> MusicBeatState.switchState(new ModchartEditorState()),
+            () -> LoadingState.loadAndSwitchState(new ModchartEditorState(), false),
             () -> MusicBeatState.switchState(new WarningState('W.I.P',
 				'Hey there! The <*>stage editor<*> is currently\n' +
                 'in a <!>work of progress<!>. Sorry for the inconvinience.',
@@ -69,18 +69,20 @@ class EditorSelectionSubState extends SelectableSubState {
         for (item in items) item.useMouse = value;
         return usingMouse = value;
     }
+
     override function update(elapsed:Float) {
         super.update(elapsed);
 
         if (mouseTimeout < 1) mouseTimeout += elapsed;
         if (mouseTimeout > 1 && usingMouse) { mouseTimeout = 0 ; usingMouse = false; }
     
-        final mouseActivity = FlxG.mouse.deltaX != 0 || FlxG.mouse.deltaY != 0 || FlxG.mouse.justPressed || FlxG.mouse.justPressedRight || FlxG.mouse.justPressedMiddle;
+        final mouseActivity = FlxG.mouse.wheel != 0 || FlxG.mouse.deltaX != 0 || FlxG.mouse.deltaY != 0 || FlxG.mouse.justPressed || FlxG.mouse.justPressedRight || FlxG.mouse.justPressedMiddle;
         if (mouseActivity && FlxG.mouse.visible) {
             mouseTimeout = 0;
             usingMouse = true;
         }
 
+        if (usingMouse && FlxG.mouse.wheel != 0) changeItem(-FlxG.mouse.wheel);
         if (controls.ACCEPT) accept();
 
         for (i => item in items.members) {

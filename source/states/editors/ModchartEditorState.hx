@@ -10,6 +10,7 @@ import states.PlayState;
 class ModchartEditorState extends MusicBeatState {
     var camGame:FlxCamera;
     var camHUD:FlxCamera;
+    var camUI:FlxCamera;
 
     var stage:BaseStage;
 
@@ -44,14 +45,33 @@ class ModchartEditorState extends MusicBeatState {
         camHUD.bgColor = 0x0;
         FlxG.cameras.add(camHUD, false);
 
+        camUI = new FlxCamera();
+        camUI.bgColor = 0x0;
+        FlxG.cameras.add(camUI, false);
+
         camGame.flashSprite.scaleX = camHUD.flashSprite.scaleX = camGame.flashSprite.scaleY = camHUD.flashSprite.scaleY = 0.45;
         camGame.y = camHUD.y = -200;
+
+        addUI(new GhostUIButton(100, 100, 'Button Example', 200, 30));
+
+        var dropdown = new GhostUIDropdown(100, 160, 'Dropdown Example', 200, 30);
+        dropdown.addButton('drop1');
+        dropdown.addButton('drop2');
+        addUI(dropdown);
 
         setupStrums();
     }
 
+    function addUI(elem:BasicUI) {
+        elem.camera = camUI;
+        add(elem);
+    }
+
     override function update(elapsed:Float) {
         super.update(elapsed);
+
+        //if (controls.UI_LEFT_P || controls.UI_RIGHT_P) camGame.scroll.x += (controls.UI_LEFT_P ? -20 : 20);
+        //if (controls.UI_UP_P || controls.UI_DOWN_P) camGame.scroll.y += (controls.UI_DOWN_P ? -20 : 20);
     }
 
     function setupStrums() {

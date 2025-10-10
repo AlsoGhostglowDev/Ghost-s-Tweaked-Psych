@@ -8,6 +8,10 @@ import openfl.geom.ColorTransform;
 class Framerate extends Sprite {
     var __bitmap(get, default):BitmapData;
     var __color(default, set):Int = 0xFF000000;
+    var __targetAlpha(get, default):Float = 1.0;
+    var __focused:Bool = true;
+    var __unfocusedAlpha:Float = 0.3;
+    var __hidden(default, null):Bool = false;
 
     function get___bitmap():BitmapData {
         return new BitmapData(1, 1, __color);
@@ -18,6 +22,10 @@ class Framerate extends Sprite {
         get___bitmap();
 
         return __color;
+    }
+
+    function get___targetAlpha():Float {
+        return __targetAlpha = __hidden ? 0 : (__focused ? 1 : __unfocusedAlpha);
     }
 
     public var fpsText:FPSCounter;
@@ -51,5 +59,32 @@ class Framerate extends Sprite {
             background.scaleX = fpsText.width + 8;
             background.scaleY = fpsText.height + 4;
         }
+    }
+
+    public function toggleVisibility(?instant:Bool = false) {
+        __hidden = !__hidden;
+        if (!__hidden) visible = true;
+        
+        if (instant) {
+            alpha = __targetAlpha;
+            visible = !__hidden;
+        } else {
+            final targetX = __hidden ? -width - 10 : 0;
+            FlxTween.cancelTweensOf(this);
+            FlxTween.tween(this, {
+                x: targetX,
+                alpha: __targetAlpha
+            }, 0.6, {ease: FlxEase.expoOut, onComplete: _ -> if (__hidden) visible = false });
+        }
+    }
+
+    public function unfocus() {
+        __focused = false;
+        FlxTween.tween(this, {alpha: __unfocusedAlpha}, 3, {ease: FlxEase.quadIn});
+    }
+
+    public function focus() {
+        __focused = true;
+        FlxTween.tween(this, {alpha: __targetAlpha}, 0.8, {ease: FlxEase.expoOut});
     }
 }
