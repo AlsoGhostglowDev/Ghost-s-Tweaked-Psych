@@ -36,8 +36,8 @@ class GhostUIButton extends BaseButton {
         targetColor = hovered ? (FlxG.mouse.pressed ? colors.pressed : colors.hovered) : colors.base;
         targetLabelColor = hovered ? (FlxG.mouse.pressed ? labelColors.pressed : labelColors.hovered) : labelColors.base;
 
-        sprite.color = FlxColor.interpolate(sprite.color, targetColor, .25);
-        label.color = FlxColor.interpolate(label.color, targetLabelColor, .25);
+        sprite.color = FlxColor.interpolate(sprite.color, targetColor, .3);
+        label.color = FlxColor.interpolate(label.color, targetLabelColor, .3);
     }
 
     private function set_text(value:String) return text = label.text = value;

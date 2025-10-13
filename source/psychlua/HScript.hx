@@ -46,6 +46,7 @@ class HScript implements HscriptInterface {
 		//Base level haxe classes. Not recommended to edit these!
 		"Int" => Int, "Float" => Float,
 		"String" => String, "Bool" => Bool, 
+		"Map" => LuaUtils.getMacroAbstractClass("haxe.ds.Map"),
 		"StringMap" => StringMap, "IntMap" => IntMap,
 
 		"Math" => Math, "Std" => Std,

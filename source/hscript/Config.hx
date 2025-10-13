@@ -15,7 +15,8 @@ class Config {
 		"flixel",
 		"openfl",
 		"haxe.xml",
-		"haxe.CallStack"
+		"haxe.CallStack",
+		"haxe.ds"
 	];
 	public static final DISALLOW_CUSTOM_CLASSES = [
 		"flixel.FlxGame",

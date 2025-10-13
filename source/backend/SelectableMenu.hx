@@ -6,6 +6,8 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 // made to be extended
 class SelectableMenu extends MusicBeatState {
     var _bg:FlxSprite;
+    var __previousIndex:Array<Int> = [0, 0];
+
     public var curSelected:Array<Int> = [0, 0];
     public var scrollMult:Array<Float> = [0, 0];
     public var allowMouseWheel:Bool = true;
@@ -17,7 +19,7 @@ class SelectableMenu extends MusicBeatState {
     public var options:Map<String, Void->Void> = new Map();
 
     public var onEnterPressed:FlxTypedSignal<Void->Void>;
-    public var onItemChanged:FlxTypedSignal<Int->Void>;
+    public var onItemChanged:FlxTypedSignal<(Int, Int)->Void>;
     public var onExit:FlxTypedSignal<Void->Void>;
     public var onExitAttempt:FlxTypedSignal<Void->Void>;
 
@@ -32,7 +34,7 @@ class SelectableMenu extends MusicBeatState {
         add(_bg);
 
         onEnterPressed = new FlxTypedSignal<Void->Void>();
-        onItemChanged = new FlxTypedSignal<Int->Void>();
+        onItemChanged = new FlxTypedSignal<(Int, Int)->Void>();
         onExit = new FlxTypedSignal<Void->Void>();
         onExitAttempt = new FlxTypedSignal<Void->Void>();
     }
@@ -64,6 +66,8 @@ class SelectableMenu extends MusicBeatState {
     public function changeItem(delta:Int, ?index:Int) {
         index ??= lead ?? 0;
 
+        __previousIndex[index] = curSelected[index];
+
         curSelected[index] += delta;
         if (allowWrapping)
             curSelected[index] %= optionOrder.length;
@@ -71,6 +75,6 @@ class SelectableMenu extends MusicBeatState {
         else
             curSelected[index] = FlxMath.wrap(curSelected[index], 0, optionOrder.length-1);
 
-        onItemChanged.dispatch(delta);
+        onItemChanged.dispatch(delta, index);
     }
 }
