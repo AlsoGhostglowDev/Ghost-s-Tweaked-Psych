@@ -74,8 +74,6 @@ class MusicBeatState extends FlxUIState
 
 		_debugGroupInitialized = true;
 
-		trace('grpDebugTxt Null? :: ${grpDebugTxt == null}');
-		trace('debugCam Null? :: ${debugCam == null}');
 		addTextToDebug('[backend Test] whats up people of america', -1);
 		#end
 
@@ -257,7 +255,6 @@ class MusicBeatState extends FlxUIState
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	public function addTextToDebug(text:String, color:FlxColor, ?isError:Bool = false) {
-		trace('[addTextToDebug] grpDebugTxt Null? :: ${grpDebugTxt == null}');
 		if (grpDebugTxt != null) {
 			var newText:psychlua.DebugLuaText = grpDebugTxt.recycle(psychlua.DebugLuaText);
 			newText.text = text;
